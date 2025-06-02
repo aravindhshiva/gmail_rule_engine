@@ -70,7 +70,7 @@ class Loader:
 
       if not messages:
         log.warning("⚠️  No messages found in inbox.")
-        sys.exit(0)  # Exiting with 1 for proper CLI behavior
+        sys.exit(0)
 
       log.success(f"Loading {len(messages)} messages from inbox.")
       with click.progressbar(messages) as bar:
