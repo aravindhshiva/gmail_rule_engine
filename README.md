@@ -144,6 +144,8 @@ There are avenues for extending the features of this CLI. Some of the potential 
 2. Allowing add, update and delete of rules from the CLI.
 3. Support additional move destinations like "STARRED", "IMPORTANT" as well as custom labels.
 4. Instead of loading the whole database every time with all emails, we could utilize partial synchronization measures.
+5. Currently, the script supports only one email address for a single run. We could make it work on a multitenanted
+model, where multiple users can access their respective inboxes.
 
 ## Author
 
