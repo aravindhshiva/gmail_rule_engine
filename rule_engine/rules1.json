@@ -1,0 +1,19 @@
+{
+    "conditionType": "ALL",
+    "rules": [
+      {
+        "field": "subject",
+        "predicate": "equals",
+        "value": "Thank You For Your Purchase"
+      }
+    ],
+    "actions": [
+      {
+        "type": "move_message",
+        "destination": "INBOX"
+      },
+      {
+        "type": "mark_as_unread"
+      }
+    ]
+}

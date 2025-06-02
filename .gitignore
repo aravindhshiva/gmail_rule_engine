@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.venv.bak/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.pytest_cache/
+test-results/
+
+# MyPy, Pylint, Pyre
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Wheel files
+*.whl
+
+# Distribution archives
+*.tar.gz
+*.zip
+
+# Editable install metadata
+*.egg-info/
+
+# CLI history and user logs
+*.log
+
+# Jupyter notebooks (optional)
+*.ipynb
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# macOS
+.DS_Store
+
+# Linux/Mac user config
+*.orig
+
+# Click autocomplete cache
+.click-completion-cache/
+
+# Local tokens/config (if applicable)
+config/token.json
+config/credentials.json

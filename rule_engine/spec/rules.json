@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/components/schemas/RuleSet",
+  "components": {
+    "schemas": {
+      "RuleSet": {
+        "type": "object",
+        "required": ["conditionType", "rules", "actions"],
+        "properties": {
+          "conditionType": {
+            "type": "string",
+            "enum": ["ALL", "ANY"]
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Rule"
+            }
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            }
+          }
+        }
+      },
+      "Rule": {
+        "type": "object",
+        "required": ["field", "predicate", "value"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": ["from_email", "to_email", "subject", "message", "received_date"]
+          },
+          "predicate": {
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "field": {
+                  "const": "received_date"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "predicate": {
+                  "enum": [
+                    "less_than_days",
+                    "greater_than_days",
+                    "less_than_months",
+                    "greater_than_months"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "field": {
+                  "enum": ["from_email", "to_email", "subject", "message"]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "predicate": {
+                  "enum": [
+                    "contains",
+                    "does_not_contain",
+                    "equals",
+                    "does_not_equal"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Action": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["move_message", "mark_as_read", "mark_as_unread"]
+          },
+          "destination": {
+            "type": "string",
+            "description": "Used if type is move_message",
+            "enum": ["INBOX", "SPAM", "TRASH"]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+    "conditionType": "ANY",
+    "rules": [
+      {
+        "field": "from_email",
+        "predicate": "contains",
+        "value": "playstation.com"
+      },
+      {
+        "field": "subject",
+        "predicate": "contains",
+        "value": "PlayStation"
+      },
+      {
+        "field": "received_date",
+        "predicate": "less_than_days",
+        "value": 2
+      }
+    ],
+    "actions": [
+      {
+        "type": "move_message",
+        "destination": "INBOX"
+      },
+      {
+        "type": "mark_as_read"
+      },
+      {
+        "type": "mark_as_unread"
+      }
+    ]
+}
