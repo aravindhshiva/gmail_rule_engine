@@ -35,7 +35,7 @@ def mocked_gmail_service():
 
 def test_loader_load_inserts_emails(mocker, mocked_gmail_service):
     """Make sure load() inserts an email into the database."""
-    mocker.patch("loader.loader.authz.credentials", return_value=mock.Mock())
+    mocker.patch("loader.loader.auth.credentials", return_value=mock.Mock())
     mocker.patch("loader.loader.build", return_value=mocked_gmail_service)
 
     mock_insert = mocker.patch("loader.loader.EmailDAO.insert_email")

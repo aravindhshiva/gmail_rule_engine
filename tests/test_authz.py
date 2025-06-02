@@ -2,11 +2,11 @@ from unittest import mock
 
 import pytest
 
-from authz import authz
+from auth import auth
 
-TOKEN_FILE = authz.TOKEN_FILE
-CREDENTIALS_FILE = authz.CREDENTIALS_FILE
-SCOPES = authz.SCOPES
+TOKEN_FILE = auth.TOKEN_FILE
+CREDENTIALS_FILE = auth.CREDENTIALS_FILE
+SCOPES = auth.SCOPES
 
 
 def test_authz_with_valid_token(mocker):
@@ -19,7 +19,7 @@ def test_authz_with_valid_token(mocker):
     m_open = mocker.mock_open()
     mocker.patch("builtins.open", m_open)
 
-    creds = authz.authz()
+    creds = auth.auth()
     assert creds is mock_creds
 
 
@@ -34,7 +34,7 @@ def test_authz_with_new_credentials_flow(mocker):
     m_open = mocker.mock_open()
     mocker.patch("builtins.open", m_open)
 
-    creds = authz.authz()
+    creds = auth.auth()
     mock_flow.run_local_server.assert_called_once()
     m_open.assert_called_with(TOKEN_FILE, "w")
     assert creds is mock_creds
@@ -45,4 +45,4 @@ def test_authz_raises_runtime_error_on_failure(mocker):
     mocker.patch("os.path.exists", side_effect=ValueError("Some error"))
 
     with pytest.raises(RuntimeError, match="Cannot retrieve token"):
-        authz.authz()
+        auth.auth()

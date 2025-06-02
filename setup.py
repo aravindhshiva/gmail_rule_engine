@@ -13,7 +13,9 @@ setup(
         "google-auth-oauthlib",
         "python-dateutil",
         "python-dotenv",
-        "jsonschema"
+        "jsonschema",
+        "pytest",
+        "pytest-mock",
     ],
     entry_points={
         "console_scripts": [

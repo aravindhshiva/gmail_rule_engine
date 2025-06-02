@@ -3,7 +3,7 @@ import json
 from rule_engine.engine import Engine
 
 sample_rules_json = {
-    "conditionType": "AND",
+    "conditionType": "ALL",
     "rules": [
         {"field": "subject", "predicate": "equals", "value": "Random Fake Email"}
     ],
