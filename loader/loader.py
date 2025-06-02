@@ -1,3 +1,6 @@
+"""
+loader.py - Manages loading of emails from the Gmail API, and insertion into local database.
+"""
 import base64
 import sqlite3
 import sys

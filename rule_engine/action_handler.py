@@ -1,3 +1,6 @@
+"""
+action_handler.py - Performs processes (like accessing Gmail API) based on configured rulesets.
+"""
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 

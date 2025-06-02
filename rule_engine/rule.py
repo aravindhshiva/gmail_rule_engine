@@ -1,3 +1,6 @@
+"""
+rule.py - Manages rules, and builds queries based on the rule paramaters.
+"""
 COLUMN_MAP = {
     "from_email": "FROMEMAIL",
     "to_email": "TOEMAIL",

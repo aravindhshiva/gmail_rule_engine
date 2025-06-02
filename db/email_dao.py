@@ -1,3 +1,6 @@
+"""
+email_dao.py - Very simple DAO for emails.
+"""
 import os
 import sqlite3
 

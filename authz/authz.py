@@ -1,3 +1,6 @@
+"""
+authz.py - Main module managing OAuth authentication with Google API. Requires a credentials.json file at `config`.
+"""
 import os.path
 
 from dotenv import load_dotenv

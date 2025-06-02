@@ -16,7 +16,6 @@ from rule_engine.engine import Engine
 
 log = get_logger()
 
-# Configuration
 RULES_PATH = Path("rule_engine/rules.json")
 
 
@@ -54,7 +53,7 @@ def invoke_rule_engine():
             )
         raise click.Abort()
     except jsonschema.exceptions.ValidationError as e:
-        log.failure("Invalid rules configuration:")
+        log.failure("Rules JSON is invalid:")
         log.failure(str(e))
         raise click.Abort()
 
@@ -79,7 +78,7 @@ def cli(init: bool, load: bool, process: bool, force_init: bool) -> NoReturn:
         raise click.Abort()
 
     if not any([init, load, process]):
-        log.failure("One operation mode (--load, --init, or --process) must be specified")
+        log.failure("One operation mode (--load, --init or --process) must be specified")
         raise click.Abort()
 
     if init:

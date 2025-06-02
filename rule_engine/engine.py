@@ -1,3 +1,6 @@
+"""
+engine.py - Rule processing engine for the Gmail Rule Engine CLI.
+"""
 import json
 import sys
 from typing import List

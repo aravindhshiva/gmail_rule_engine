@@ -1,3 +1,6 @@
+"""
+init_db.py - Initializes the database, optionally able to delete and recreate it.
+"""
 import os
 import sqlite3
 
