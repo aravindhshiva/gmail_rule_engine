@@ -56,7 +56,7 @@ class Loader:
 
   @staticmethod
   def _get_message_details(message_headers):
-    result = {}
+    result = {"From": "", "To": "", "Subject": "", "Date": ""}
     for header in message_headers:
       if header['name'] in {'From','To','Subject'}:
         result[header['name']] = (header['value'])
