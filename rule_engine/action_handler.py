@@ -2,7 +2,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from authz import authz
-
 from logutils.utils import get_logger
 
 log = get_logger()

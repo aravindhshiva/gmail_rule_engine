@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 setup(
     name="gmail-rule-engine",
@@ -11,6 +12,8 @@ setup(
         "google-auth",
         "google-auth-oauthlib",
         "python-dateutil",
+        "python-dotenv",
+        "jsonschema"
     ],
     entry_points={
         "console_scripts": [

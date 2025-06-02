@@ -1,19 +1,16 @@
+import base64
 import sqlite3
 import sys
 
+import click
+from dateutil import parser
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from authz import authz
-
-from dateutil import parser
-import base64
-import click
-
 from db.email_dao import EmailDAO
-from model.email import Email
-
 from logutils.utils import get_logger
+from model.email import Email
 
 log = get_logger()
 
@@ -67,7 +64,7 @@ class Loader:
   def load(self):
     try:
       messages = self._get_all_messages()
-      messages = []
+
       if not messages:
         log.warning("⚠️  No messages found in inbox.")
         sys.exit(0)  # Exiting with 1 for proper CLI behavior
@@ -96,7 +93,7 @@ class Loader:
       sys.exit(1)
     except sqlite3.IntegrityError as error:
       if "UNIQUE constraint failed" in str(error):
-        log.failure("Cannot load the same message twice. Maybe the database is already loaded.")
+        log.failure("Cannot load the same message twice. The database might already be loaded.")
         sys.exit(1)
 
       log.failure(f"Something went wrong. Error: {error}")

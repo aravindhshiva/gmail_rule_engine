@@ -1,5 +1,7 @@
 import json
-from jsonschema.validators import Draft202012Validator, exceptions
+
+from jsonschema.validators import Draft202012Validator
+from jsonschema.validators import exceptions
 
 from logutils.utils import get_logger
 

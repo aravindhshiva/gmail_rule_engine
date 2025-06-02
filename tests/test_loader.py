@@ -1,5 +1,7 @@
-import pytest
 from unittest import mock
+
+import pytest
+
 from loader.loader import Loader
 from model.email import Email
 

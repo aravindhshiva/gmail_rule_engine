@@ -1,5 +1,5 @@
-import sqlite3
 import os
+import sqlite3
 
 from logutils.utils import get_logger
 

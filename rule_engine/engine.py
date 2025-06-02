@@ -5,13 +5,12 @@ from typing import List
 from jsonschema import exceptions
 
 from db.email_dao import EmailDAO
-from model.email import Email
+from logutils.utils import get_logger
 from model.action import Action
+from model.email import Email
 from rule_engine.action_handler import ActionHandler
 from rule_engine.rule import Rule
-from rule_engine.validate import validate\
-
-from logutils.utils import get_logger
+from rule_engine.validate import validate
 
 log = get_logger()
 

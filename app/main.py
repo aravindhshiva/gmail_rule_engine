@@ -1,62 +1,95 @@
-import sys
+"""
+Gmail Rule Engine CLI - Main entry point for the application.
+Provides command-line interface for initializing, loading, and processing email rules.
+"""
+from pathlib import Path
+from typing import NoReturn
 
-import jsonschema
 import click
+import jsonschema
 import sqlite3
 
+from db.init_db import init_db
 from loader.loader import Loader
+from logutils.utils import get_logger
 from rule_engine.engine import Engine
 
-from logutils.utils import get_logger
-
 log = get_logger()
+
+# Configuration
+RULES_PATH = Path("rule_engine/rules.json")
+
+
+def handle_db_init(force=False):
+    try:
+        init_db(force)
+    except sqlite3.Error as e:
+        log.failure(f"Cannot initialize database: {e}")
+        raise click.Abort()
+
+
+def handle_email_load():
+    try:
+        loader = Loader()
+        loader.load()
+    except FileNotFoundError:
+        log.failure("Cannot load database because it is not initialized.")
+        raise click.Abort()
+
+
+def invoke_rule_engine():
+    try:
+        engine = Engine(rules_json_path=str(RULES_PATH))
+        engine.process()
+    except sqlite3.OperationalError as e:
+        log.failure(f"Cannot process rules, database error: {e}")
+        raise click.Abort()
+    except TypeError as e:
+        if str(e) == "Invalid condition type.":
+            log.failure("Cannot process rules, invalid condition type passed.")
+        else:
+            log.failure(
+                "Conflicting label operations detected: Cannot both add and remove "
+                "the same labels (e.g., mark_as_read and mark_as_unread)"
+            )
+        raise click.Abort()
+    except jsonschema.exceptions.ValidationError as e:
+        log.failure("Invalid rules configuration:")
+        log.failure(str(e))
+        raise click.Abort()
+
 
 @click.command()
 @click.option('--init', help='Initialize the database.', is_flag=True)
 @click.option('--load', help='Load the database.', is_flag=True)
 @click.option('--process', help='Process rules.', is_flag=True)
-@click.option('--force-init',
-              help='Force initialize the database. (deletes the database if it exists, and re-initializes it)',
-              is_flag=True)
-def cli(init, load, process, force_init):
+@click.option(
+    '--force-init',
+    help='Force initialize the database (deletes existing database).',
+    is_flag=True
+)
+def cli(init: bool, load: bool, process: bool, force_init: bool) -> NoReturn:
+    """
+    Gmail Rule Engine CLI Entrypoint.
+
+    Initializes the database, loads emails and process rules against loaded emails.
+    """
     if not init and force_init:
-        log.failure("--init must be passed to be able to force initialization.")
-        sys.exit(1)
+        log.failure("--init must be passed to use --force-init")
+        raise click.Abort()
 
-    if not init and not load and not process:
-        log.failure("Any one operation mode of --load, --init or --process must be passed.")
-        sys.exit(1)
+    if not any([init, load, process]):
+        log.failure("One operation mode (--load, --init, or --process) must be specified")
+        raise click.Abort()
 
-    try:
-        if init:
-            from db.init_db import init_db
-            init_db(force_init)
-    except sqlite3.Error as e:
-        log.failure("Cannot initialize database due to error: ", e)
+    if init:
+        handle_db_init(force_init)
 
     if load:
-        loader = Loader()
-        loader.load()
+        handle_email_load()
 
-    try:
-        if process:
-            engine = Engine(rules_json_path="rule_engine/rules.json")
-            engine.process()
-    except sqlite3.OperationalError as e:
-        log.failure("Cannot process rules, make sure the database is populated.")
-        log.failure(e)
-        sys.exit(1)
-    except TypeError as e:
-        if e == "Invalid condition type.":
-            log.failure("Cannot process rules, invalid condition type passed.")
-        else:
-            log.failure("It is not allowed to remove and add same labels. "
-                  "This can happen if you have both 'mark_as_read' and 'mark_as_unread' in rule configuration.")
-        sys.exit(1)
-    except jsonschema.exceptions.ValidationError as e:
-        log.failure("Provided rules JSON is invalid. Please check your rules configuration.")
-        log.failure(e)
-        sys.exit(1)
+    if process:
+        invoke_rule_engine()
 
 
 if __name__ == '__main__':

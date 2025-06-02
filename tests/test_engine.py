@@ -1,4 +1,5 @@
 import json
+
 from rule_engine.engine import Engine
 
 sample_rules_json = {

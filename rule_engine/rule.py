@@ -1,5 +1,3 @@
-from db.email_dao import EmailDAO
-
 COLUMN_MAP = {
     "from_email": "FROMEMAIL",
     "to_email": "TOEMAIL",

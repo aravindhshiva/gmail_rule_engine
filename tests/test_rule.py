@@ -1,4 +1,5 @@
 import pytest
+
 from rule_engine.rule import Rule
 
 

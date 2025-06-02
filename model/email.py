@@ -1,5 +1,5 @@
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 
 # Maps the column names in the database, to the attribute names in the dataclass.
 FIELD_MAP = {
