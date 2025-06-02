@@ -1,5 +1,5 @@
 """
-authz.py - Main module managing OAuth authentication with Google API. Requires a credentials.json file at `config`.
+auth.py - Main module managing OAuth authentication with Google API. Requires a credentials.json file at `config`.
 """
 import os.path
 
@@ -20,7 +20,7 @@ from logutils.utils import get_logger
 
 log = get_logger()
 
-def authz():
+def auth():
     try:
         creds = None
         if os.path.exists(TOKEN_FILE):
@@ -40,4 +40,4 @@ def authz():
         raise RuntimeError("Cannot retrieve token for processing.")
 
 def credentials():
-    return authz()
+    return auth()

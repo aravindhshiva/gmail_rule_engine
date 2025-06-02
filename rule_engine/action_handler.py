@@ -4,7 +4,7 @@ action_handler.py - Performs processes (like accessing Gmail API) based on confi
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from authz import authz
+from auth import auth
 from logutils.utils import get_logger
 
 log = get_logger()
@@ -21,7 +21,7 @@ class ActionHandler:
 
     def process(self):
         try:
-            service = build("gmail", "v1", credentials=authz.credentials())
+            service = build("gmail", "v1", credentials=auth.credentials())
             for action in self.actions:
                 if hasattr(self, action.action_type):
                     if action.action_type == "move_message":

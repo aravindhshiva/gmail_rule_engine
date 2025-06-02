@@ -10,7 +10,7 @@ from dateutil import parser
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from authz import authz
+from auth import auth
 from db.email_dao import EmailDAO
 from logutils.utils import get_logger
 from model.email import Email
@@ -20,7 +20,7 @@ log = get_logger()
 
 class Loader:
   def __init__(self):
-    self.service = build("gmail", "v1", credentials=authz.credentials())
+    self.service = build("gmail", "v1", credentials=auth.credentials())
 
   @staticmethod
   def _get_message_body(message):
