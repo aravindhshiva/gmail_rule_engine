@@ -43,7 +43,6 @@ class Loader:
             messages.extend(response['messages'])
 
         while 'nextPageToken' in response:
-          break
           page_token = response['nextPageToken']
           response = self.service.users().messages().list(userId="me", maxResults=100, pageToken=page_token).execute()
 
