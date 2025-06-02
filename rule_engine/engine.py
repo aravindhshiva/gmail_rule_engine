@@ -9,9 +9,13 @@ from model.email import Email
 from model.action import Action
 from rule_engine.action_handler import ActionHandler
 from rule_engine.rule import Rule
-from rule_engine.validate import validate
+from rule_engine.validate import validate\
 
-# TODO: Make this a singleton -- (should you?)
+from logutils.utils import get_logger
+
+log = get_logger()
+
+
 class Engine:
     """
     Engine for processing the rules and performing actions on queried emails. Does three things:
@@ -48,9 +52,9 @@ class Engine:
             rule_queries = [rule.build_query() for rule in rules]
 
             match self._condition_type().upper():
-                case "AND":
+                case "ALL":
                     where_clause = " AND ".join(rule_queries)
-                case "OR":
+                case "ANY":
                     where_clause = " OR ".join(rule_queries)
                 case _:
                     raise TypeError("Invalid condition type.")
@@ -59,7 +63,7 @@ class Engine:
             emails: List[Email] = self._retrieve_emails(where_clause)
 
             if not emails:
-                print("No emails found matching the given rules.")
+                log.failure("No emails found matching the given rules.")
                 sys.exit(0)
 
             # Invoke action
@@ -68,5 +72,5 @@ class Engine:
             action_handler.process()
 
         except exceptions.ValidationError as e:
-            print("Invalid rules in rules.json, cannot proceed.")
+            log.failure("Invalid rules in rules.json, cannot proceed.")
             raise e

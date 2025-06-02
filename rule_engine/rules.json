@@ -13,7 +13,7 @@
       },
       {
         "field": "received_date",
-        "predicate": "less_than_days",
+        "predicate": "less_than_months",
         "value": 2
       }
     ],
@@ -21,9 +21,6 @@
       {
         "type": "move_message",
         "destination": "INBOX"
-      },
-      {
-        "type": "mark_as_read"
       },
       {
         "type": "mark_as_unread"

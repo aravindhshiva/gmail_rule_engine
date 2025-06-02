@@ -10,14 +10,13 @@ COLUMN_MAP = {
 
 class Rule:
     """
-    Class for managing and creating queries based on rules. Generates WHERE clauses based on the fields, predicates
-    and values present in a rule.
+    Class for representing a rule as well as managing and creating queries based on rules. Generates WHERE clauses based
+    on the fields, predicates and values present in a rule.
     """
     def __init__(self, field, predicate, value):
         self.field = field
         self.predicate = predicate
         self.value = value
-        self.email_dao = EmailDAO()
 
     def build_query(self):
         if hasattr(self, self.predicate):

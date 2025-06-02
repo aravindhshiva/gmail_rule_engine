@@ -2,7 +2,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from authz import authz
-import sys
+
+from logutils.utils import get_logger
+
+log = get_logger()
 
 class ActionHandler:
     def __init__(self, emails, actions):
@@ -28,9 +31,9 @@ class ActionHandler:
 
             service.users().messages().batchModify(userId="me", body=self.payload).execute()
 
-            print(f"\nPerformed actions: {", ".join([a.action_type for a in self.actions])} on {len(self.emails)} emails")
+            log.success(f"Performed actions: {", ".join([a.action_type for a in self.actions])} on {len(self.emails)} emails")
         except HttpError as e:
-            print("Something went wrong while updating the message.", e)
+            log.failure("Something went wrong while updating the message.", e)
             raise e
 
     def move_message(self, destination):

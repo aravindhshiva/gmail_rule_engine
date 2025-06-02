@@ -79,3 +79,4 @@ dist/
 # Local tokens/config (if applicable)
 config/token.json
 config/credentials.json
+config/*.db

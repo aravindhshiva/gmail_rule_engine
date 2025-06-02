@@ -8,4 +8,4 @@ fi
 
 source "$VENV_DIR/bin/activate"
 
-pip install .
+pip install -e .

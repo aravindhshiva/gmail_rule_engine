@@ -1,6 +1,10 @@
 import json
 from jsonschema.validators import Draft202012Validator, exceptions
 
+from logutils.utils import get_logger
+
+log = get_logger()
+
 def validate(rules_json_path):
     with open("rule_engine/spec/rules.json", "r") as rf:
         schema = json.load(rf)
@@ -12,5 +16,5 @@ def validate(rules_json_path):
         validator = Draft202012Validator(schema)
         validator.validate(rules)
     except exceptions.ValidationError as e:
-        print("JSON validation error:", e.message)
+        log.failure("JSON validation error:", e.message)
         raise e

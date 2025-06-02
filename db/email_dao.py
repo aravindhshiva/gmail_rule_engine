@@ -26,7 +26,7 @@ class EmailDAO:
     def query_email(self, where_clause):
         base_query = "SELECT * FROM email WHERE "
         full_query = base_query + where_clause
-        print(f"Running the query -- {full_query}")
+        # print(f"Running the query -- {full_query}")
 
         rows = self.cursor.execute(full_query)
         emails = []

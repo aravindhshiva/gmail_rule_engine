@@ -1,6 +1,7 @@
 from datetime import datetime
 from dataclasses import dataclass
 
+# Maps the column names in the database, to the attribute names in the dataclass.
 FIELD_MAP = {
     'ID': 'email_id',
     'FROMEMAIL': 'from_email',

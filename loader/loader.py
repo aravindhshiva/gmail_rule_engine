@@ -13,6 +13,10 @@ import click
 from db.email_dao import EmailDAO
 from model.email import Email
 
+from logutils.utils import get_logger
+
+log = get_logger()
+
 
 class Loader:
   def __init__(self):
@@ -46,7 +50,7 @@ class Loader:
               messages.extend(response['messages'])
 
     except Exception as e:
-        print(f'An error occurred: {e}')
+        log.failure(f'An error occurred: {e}')
 
     return messages
 
@@ -63,12 +67,12 @@ class Loader:
   def load(self):
     try:
       messages = self._get_all_messages()
-
+      messages = []
       if not messages:
-        print("No messages found in inbox.")
-        sys.exit(1)  # Exiting with 1 for proper CLI behavior
+        log.warning("⚠️  No messages found in inbox.")
+        sys.exit(0)  # Exiting with 1 for proper CLI behavior
 
-      print(f"Loading {len(messages)} messages from inbox.")
+      log.success(f"Loading {len(messages)} messages from inbox.")
       with click.progressbar(messages) as bar:
         for message in bar:
           message_id = message["id"]
@@ -82,9 +86,18 @@ class Loader:
 
           email_dao = EmailDAO()
           email_dao.insert_email(email)
+      log.success(f"Loaded {len(messages)} messages from inbox.")
     except HttpError as error:
-      print(f"An error occurred: {error}")
+      log.failure(f"An error occurred: {error}")
       sys.exit(1)
-    except sqlite3.Error as error:
-      print(f"Cannot add message to database. Error: {error}")
+    except sqlite3.OperationalError as error:
+      log.failure(f"An error occurred when inserting into database.")
+      log.failure(f"Error: {error}")
+      sys.exit(1)
+    except sqlite3.IntegrityError as error:
+      if "UNIQUE constraint failed" in str(error):
+        log.failure("Cannot load the same message twice. Maybe the database is already loaded.")
+        sys.exit(1)
+
+      log.failure(f"Something went wrong. Error: {error}")
       sys.exit(1)

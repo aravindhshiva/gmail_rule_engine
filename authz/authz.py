@@ -1,13 +1,20 @@
 import os.path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.modify"]
+SCOPES = os.getenv("SCOPES").split(",")
 
-TOKEN_FILE = "config/token.json"
-CREDENTIALS_FILE = "config/credentials.json"
+TOKEN_FILE = os.getenv("TOKEN_FILE")
+CREDENTIALS_FILE = os.getenv("CREDENTIALS_FILE")
+
+from logutils.utils import get_logger
+
+log = get_logger()
 
 def authz():
     try:
@@ -25,7 +32,7 @@ def authz():
                 token.write(creds.to_json())
         return creds
     except (ValueError, IOError) as e:
-        print(e)
+        log.failure(e)
         raise RuntimeError("Cannot retrieve token for processing.")
 
 def credentials():
