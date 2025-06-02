@@ -33,7 +33,7 @@ class ActionHandler:
 
             service.users().messages().batchModify(userId="me", body=self.payload).execute()
 
-            log.success(f"Performed actions: {", ".join([a.action_type for a in self.actions])} on {len(self.emails)} emails")
+            log.success(f"Performed actions: {', '.join([a.action_type for a in self.actions])} on {len(self.emails)} emails")
         except HttpError as e:
             log.failure("Something went wrong while updating the message.", e)
             raise e
